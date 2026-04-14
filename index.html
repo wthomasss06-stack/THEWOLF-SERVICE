@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THEWOLF SERVICE — Le confort en toute liberté</title>
+<meta name="description" content="Résidences meublées premium à Abidjan. Studios, F2, F3 et villas disponibles 24h/24.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Favicons -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+<link rel="manifest" href="/assets/icons/site.webmanifest">
+<link rel="mask-icon" href="/assets/icons/safari-pinned-tab.svg" color="#1E6899">
+<meta name="msapplication-TileColor" content="#1E6899">
+<meta name="theme-color" content="#1E6899">
+<style>
+  :root {
+    --sky:     #1E6899;
+    --sky-mid: #3996CC;
+    --sky-lt:  #87C4EA;
+    --sky-pale:#E0F1FA;
+    --sky-ultra:#F0F8FD;
+    --white:   #FFFFFF;
+    --black:   #0D1B26;
+    --gray:    #6B7D8C;
+    --orange:  #E06018;
+    --gold:    #C8993A;
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.25);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+font-family: 'DM Sans', sans-serif;
+background: var(--white);
+color: var(--black);
+overflow-x: hidden;
+}
+
+/* ── LOADER ── */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: linear-gradient(135deg, var(--sky-ultra) 0%, var(--white) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2rem;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+.loader-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.loader-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--sky);
+  animation: pulseLogo 1.5s ease-in-out infinite;
+}
+.loader-bar {
+  width: 200px;
+  height: 4px;
+  background: var(--sky-pale);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+.loader-bar::after {
+  content: '';
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--sky);
+  animation: loadingBar 1.5s ease-in-out infinite;
+}
+@keyframes pulseLogo {
+  0%, 100% { opacity: 0.6; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1); }
+}
+@keyframes loadingBar {
+  0% { left: -100%; }
+  50% { left: 0; }
+  100% { left: 100%; }
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--sky-ultra); }
+::-webkit-scrollbar-thumb { background: var(--sky-mid); border-radius: 3px; }
+
+/* ── GLASSMORPHISM ICONS ── */
+.glass-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.glass-icon::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg) translateX(-100%);
+  transition: transform 0.6s;
+}
+.glass-icon:hover::before {
+  transform: rotate(45deg) translateX(100%);
+}
+.glass-icon:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 12px 40px rgba(30, 104, 153, 0.4);
+}
+.glass-icon svg {
+  width: 32px;
+  height: 32px;
+  fill: none;
+  stroke: var(--sky);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.glass-icon-sm {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+}
+.glass-icon-sm svg {
+  width: 24px;
+  height: 24px;
+}
+.glass-icon-lg {
+  width: 80px;
+  height: 80px;
+  border-radius: 24px;
+}
+.glass-icon-lg svg {
+  width: 40px;
+  height: 40px;
+}
+
+/* ── NAV ── */
+nav {
+position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+display: flex; align-items: center; justify-content: space-between;
+padding: 0 5%;
+height: 68px;
+background: rgba(255,255,255,0.92);
+backdrop-filter: blur(16px);
+border-bottom: 1px solid rgba(135,196,234,0.3);
+transition: box-shadow 0.3s;
+}
+nav.scrolled { box-shadow: 0 4px 30px rgba(30,104,153,0.12); }
+
+.nav-logo {
+display: flex; flex-direction: column; line-height: 1;
+}
+.nav-logo span:first-child {
+font-family: 'Playfair Display', serif;
+font-size: 1.35rem; font-weight: 900;
+color: var(--sky);
+letter-spacing: 0.02em;
+}
+.nav-logo span:last-child {
+font-size: 0.6rem; font-weight: 500; letter-spacing: 0.18em;
+color: var(--sky-mid); text-transform: uppercase;
+}
+
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+font-size: 0.85rem; font-weight: 500; letter-spacing: 0.04em;
+color: var(--gray); text-decoration: none;
+transition: color 0.2s;
+position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--sky);
+  transition: width 0.3s ease;
+}
+.nav-links a:hover { color: var(--sky); }
+.nav-links a:hover::after { width: 100%; }
+
+.nav-cta {
+background: var(--sky);
+color: var(--white) !important;
+padding: 0.5rem 1.2rem;
+border-radius: 50px;
+font-weight: 600 !important;
+font-size: 0.82rem !important;
+letter-spacing: 0.06em !important;
+transition: background 0.2s, transform 0.15s !important;
+}
+.nav-cta:hover { background: var(--sky-mid) !important; transform: translateY(-1px); }
+.nav-cta::after { display: none !important; }
+
+/* ── HERO ── */
+.hero {
+min-height: 100vh;
+display: grid; grid-template-columns: 1fr 1fr;
+align-items: center;
+padding: 100px 5% 60px;
+position: relative;
+overflow: hidden;
+background: linear-gradient(135deg, var(--sky-ultra) 0%, var(--white) 60%);
+}
+
+.hero::before {
+content: '';
+position: absolute; top: -100px; right: -100px;
+width: 600px; height: 600px;
+border-radius: 50%;
+background: radial-gradient(circle, rgba(57,150,204,0.12) 0%, transparent 70%);
+pointer-events: none;
+}
+.hero::after {
+content: '';
+position: absolute; bottom: -60px; left: 30%;
+width: 300px; height: 300px;
+border-radius: 50%;
+background: radial-gradient(circle, rgba(30,104,153,0.07) 0%, transparent 70%);
+pointer-events: none;
+}
+
+.hero-content { z-index: 1; }
+.hero-badge {
+display: inline-flex; align-items: center; gap: 0.5rem;
+background: var(--sky-pale); color: var(--sky);
+font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em;
+text-transform: uppercase; padding: 0.4rem 1rem; border-radius: 50px;
+margin-bottom: 1.5rem;
+animation: fadeUp 0.8s ease both;
+}
+.hero-badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--sky); }
+
+.hero h1 {
+font-family: 'Playfair Display', serif;
+font-size: clamp(2.8rem, 5vw, 4.2rem);
+font-weight: 900; line-height: 1.08;
+color: var(--black);
+animation: fadeUp 0.8s 0.1s ease both;
+}
+.hero h1 em {
+font-style: italic; color: var(--sky);
+}
+
+.hero-tagline {
+margin: 1.2rem 0 2.5rem;
+font-size: 1rem; font-weight: 300; color: var(--gray); line-height: 1.7;
+max-width: 460px;
+animation: fadeUp 0.8s 0.2s ease both;
+}
+
+.hero-actions {
+display: flex; gap: 1rem; flex-wrap: wrap;
+animation: fadeUp 0.8s 0.3s ease both;
+}
+.btn-primary {
+background: var(--sky); color: var(--white);
+padding: 0.85rem 2rem; border-radius: 50px;
+font-weight: 600; font-size: 0.9rem; letter-spacing: 0.04em;
+text-decoration: none; border: none; cursor: pointer;
+display: inline-flex; align-items: center; gap: 0.5rem;
+transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+box-shadow: 0 8px 24px rgba(30,104,153,0.25);
+}
+.btn-primary:hover { background: var(--sky-mid); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(30,104,153,0.35); }
+
+.btn-wa {
+background: #25D366; color: var(--white);
+padding: 0.85rem 2rem; border-radius: 50px;
+font-weight: 600; font-size: 0.9rem;
+text-decoration: none;
+display: inline-flex; align-items: center; gap: 0.5rem;
+transition: background 0.2s, transform 0.15s;
+box-shadow: 0 8px 24px rgba(37,211,102,0.25);
+}
+.btn-wa:hover { background: #1ebe5d; transform: translateY(-2px); }
+
+.hero-stats {
+display: flex; gap: 2.5rem; margin-top: 3rem;
+animation: fadeUp 0.8s 0.4s ease both;
+}
+.stat-item { display: flex; flex-direction: column; }
+.stat-num {
+font-family: 'Playfair Display', serif;
+font-size: 2rem; font-weight: 900; color: var(--sky); line-height: 1;
+}
+.stat-label { font-size: 0.72rem; color: var(--gray); margin-top: 0.2rem; text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* Hero image side */
+.hero-visual {
+position: relative; z-index: 1;
+display: flex; flex-direction: column; gap: 1rem;
+animation: fadeLeft 0.9s 0.2s ease both;
+}
+.hero-card-main {
+background: var(--sky);
+border-radius: 24px;
+overflow: hidden;
+aspect-ratio: 4/3;
+display: flex; align-items: flex-end;
+padding: 1.5rem;
+position: relative;
+}
+.hero-card-main::before {
+content: '';
+position: absolute; inset: 0;
+background: linear-gradient(to bottom, rgba(30,104,153,0.1) 0%, rgba(13,27,38,0.65) 100%);
+}
+.hero-card-img-bg {
+position: absolute; inset: 0;
+background: url('/assets/images/hero-residence.jpg') center/cover no-repeat;
+display: flex; align-items: center; justify-content: center;
+}
+.hero-card-img-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(30,104,153,0.3) 0%, rgba(57,150,204,0.2) 100%);
+}
+.hero-card-info { position: relative; z-index: 1; color: var(--white); }
+.hero-card-info h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; }
+.hero-card-info p { font-size: 0.78rem; opacity: 0.8; margin-top: 0.2rem; }
+.hero-card-price {
+position: absolute; top: 1rem; right: 1rem; z-index: 1;
+background: rgba(255,255,255,0.15); backdrop-filter: blur(8px);
+color: var(--white); padding: 0.4rem 0.9rem; border-radius: 50px;
+font-size: 0.8rem; font-weight: 600; border: 1px solid rgba(255,255,255,0.2);
+}
+
+.hero-cards-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.hero-card-sm {
+background: var(--sky-pale);
+border-radius: 16px; padding: 1.2rem;
+display: flex; flex-direction: column; gap: 0.5rem;
+border: 1px solid rgba(135,196,234,0.4);
+}
+.hero-card-sm .glass-icon { margin-bottom: 0.5rem; }
+.hero-card-sm strong { font-size: 0.9rem; color: var(--black); }
+.hero-card-sm span { font-size: 0.75rem; color: var(--gray); }
+
+/* ── SECTION TITRE ── */
+.section-header {
+text-align: center; max-width: 560px; margin: 0 auto 3.5rem;
+}
+.section-label {
+display: inline-block;
+font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em;
+text-transform: uppercase; color: var(--sky-mid);
+margin-bottom: 0.8rem;
+}
+.section-header h2 {
+font-family: 'Playfair Display', serif;
+font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 900;
+line-height: 1.15; color: var(--black);
+}
+.section-header h2 em { font-style: italic; color: var(--sky); }
+.section-header p { margin-top: 0.8rem; color: var(--gray); font-size: 0.95rem; line-height: 1.7; }
+
+/* ── RÉSIDENCES ── */
+#residences { padding: 6rem 5%; background: var(--white); }
+
+.filter-bar {
+display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center;
+margin-bottom: 3rem;
+}
+.filter-btn {
+padding: 0.45rem 1.1rem; border-radius: 50px; border: 1.5px solid var(--sky-lt);
+background: transparent; color: var(--gray); font-size: 0.82rem; font-weight: 500;
+cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+}
+.filter-btn.active, .filter-btn:hover {
+background: var(--sky); color: var(--white); border-color: var(--sky);
+}
+
+.residences-grid {
+display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+gap: 1.8rem;
+}
+
+.res-card {
+background: var(--white); border-radius: 20px;
+border: 1px solid rgba(135,196,234,0.25);
+overflow: hidden;
+transition: transform 0.25s, box-shadow 0.25s;
+box-shadow: 0 2px 16px rgba(30,104,153,0.06);
+}
+.res-card:hover {
+transform: translateY(-6px);
+box-shadow: 0 16px 48px rgba(30,104,153,0.15);
+}
+
+.res-card-img {
+position: relative; aspect-ratio: 16/10; overflow: hidden;
+background: linear-gradient(135deg, var(--sky) 0%, var(--sky-lt) 100%);
+display: flex; align-items: center; justify-content: center;
+}
+.res-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.res-card:hover .res-card-img img {
+  transform: scale(1.05);
+}
+.res-badge {
+position: absolute; top: 0.8rem; left: 0.8rem;
+background: var(--sky-pale); color: var(--sky);
+font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+padding: 0.3rem 0.7rem; border-radius: 50px;
+backdrop-filter: blur(10px);
+}
+.res-badge.dispo { background: rgba(22, 140, 79, 0.15); color: #168C4F; }
+.res-badge.occupe { background: rgba(224, 96, 24, 0.15); color: var(--orange); }
+
+.res-card-body { padding: 1.3rem; }
+.res-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
+.res-card-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; line-height: 1.2; }
+.res-location { font-size: 0.78rem; color: var(--gray); display: flex; align-items: center; gap: 0.3rem; margin-bottom: 1rem; }
+
+.res-features {
+display: flex; gap: 1rem; margin-bottom: 1.2rem; flex-wrap: wrap;
+}
+.res-feature { font-size: 0.76rem; color: var(--gray); display: flex; align-items: center; gap: 0.3rem; }
+.res-feature svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--sky-mid);
+  stroke-width: 2;
+  fill: none;
+}
+
+.res-pricing {
+display: flex; gap: 1rem; align-items: center;
+padding: 0.8rem; background: var(--sky-ultra); border-radius: 12px;
+margin-bottom: 1rem;
+}
+.price-item { display: flex; flex-direction: column; flex: 1; }
+.price-label { font-size: 0.65rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; }
+.price-val { font-weight: 700; font-size: 0.95rem; color: var(--sky); }
+.price-divider { width: 1px; height: 30px; background: var(--sky-lt); }
+
+.res-card-actions { display: flex; gap: 0.6rem; }
+.btn-details {
+flex: 1; padding: 0.6rem; border-radius: 10px;
+border: 1.5px solid var(--sky-lt); background: transparent;
+color: var(--sky); font-size: 0.82rem; font-weight: 600;
+cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+}
+.btn-details:hover { background: var(--sky-pale); border-color: var(--sky); }
+.btn-reserver {
+flex: 1.5; padding: 0.6rem; border-radius: 10px;
+background: var(--sky); color: var(--white);
+font-size: 0.82rem; font-weight: 600;
+border: none; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+}
+.btn-reserver:hover { background: var(--sky-mid); }
+
+/* ── GALERIE ── */
+#galerie { padding: 6rem 5%; background: var(--sky-ultra); }
+
+.galerie-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+grid-template-rows: repeat(2, 180px);
+gap: 0.8rem;
+}
+.gal-item {
+border-radius: 16px; overflow: hidden; cursor: pointer;
+position: relative;
+transition: transform 0.25s;
+background: var(--sky-pale);
+}
+.gal-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.gal-item:hover { transform: scale(1.02); }
+.gal-item:hover img { transform: scale(1.1); }
+.gal-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+.gal-overlay {
+position: absolute; inset: 0;
+background: rgba(13,27,38,0); transition: background 0.25s;
+display: flex; align-items: center; justify-content: center;
+backdrop-filter: blur(0px);
+transition: all 0.3s ease;
+}
+.gal-item:hover .gal-overlay { background: rgba(13,27,38,0.4); backdrop-filter: blur(2px); }
+.gal-overlay .glass-icon {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+}
+.gal-item:hover .gal-overlay .glass-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── AVANTAGES ── */
+#avantages { padding: 6rem 5%; background: var(--white); }
+.avantages-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
+.av-card {
+padding: 1.8rem 1.5rem; border-radius: 20px;
+background: var(--sky-ultra); border: 1px solid rgba(135,196,234,0.3);
+transition: transform 0.2s, box-shadow 0.2s;
+text-align: center;
+}
+.av-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(30,104,153,0.1); }
+.av-card .glass-icon { margin: 0 auto 1rem; }
+.av-card h3 { font-size: 1rem; font-weight: 700; color: var(--black); margin-bottom: 0.4rem; }
+.av-card p { font-size: 0.82rem; color: var(--gray); line-height: 1.6; }
+
+/* ── RÉSERVATION ── */
+#reservation { padding: 6rem 5%; background: linear-gradient(135deg, var(--sky) 0%, #1A5A8A 100%); }
+#reservation .section-label { color: var(--sky-lt); }
+#reservation .section-header h2 { color: var(--white); }
+#reservation .section-header h2 em { color: var(--sky-lt); }
+#reservation .section-header p { color: rgba(255,255,255,0.75); }
+
+.form-container {
+max-width: 680px; margin: 0 auto;
+background: rgba(255,255,255,0.08); backdrop-filter: blur(16px);
+border: 1px solid rgba(255,255,255,0.15);
+border-radius: 28px; padding: 2.5rem;
+}
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+.form-group label { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.85); letter-spacing: 0.04em; }
+.form-group input, .form-group select, .form-group textarea {
+background: rgba(255,255,255,0.1);
+border: 1px solid rgba(255,255,255,0.2);
+border-radius: 12px; padding: 0.75rem 1rem;
+color: var(--white); font-size: 0.88rem; font-family: 'DM Sans', sans-serif;
+transition: border-color 0.2s, background 0.2s;
+outline: none;
+}
+.form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.4); }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+border-color: var(--sky-lt); background: rgba(255,255,255,0.15);
+}
+.form-group select option { background: var(--sky); color: white; }
+.form-group textarea { resize: vertical; min-height: 90px; }
+
+.form-submit {
+width: 100%; padding: 1rem; border-radius: 50px;
+background: var(--white); color: var(--sky);
+font-size: 1rem; font-weight: 700; border: none;
+cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+margin-top: 0.5rem;
+display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+}
+.form-submit:hover { background: var(--sky-pale); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+
+.form-wa-alt {
+text-align: center; margin-top: 1.2rem;
+font-size: 0.82rem; color: rgba(255,255,255,0.6);
+}
+.form-wa-alt a {
+color: #5FE68A; font-weight: 600; text-decoration: none;
+display: inline-flex; align-items: center; gap: 0.3rem;
+}
+.form-wa-alt a:hover { text-decoration: underline; }
+
+/* ── CONTACT STRIP ── */
+.contact-strip {
+background: var(--sky-ultra); padding: 3rem 5%;
+display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;
+border-top: 1px solid rgba(135,196,234,0.3);
+}
+.contact-strip-info { display: flex; flex-direction: column; gap: 0.4rem; }
+.contact-strip-info h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; color: var(--sky); }
+.contact-strip-info p { font-size: 0.85rem; color: var(--gray); }
+.contact-strip-links { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+.contact-link {
+display: flex; align-items: center; gap: 0.4rem;
+padding: 0.6rem 1.2rem; border-radius: 50px;
+font-size: 0.82rem; font-weight: 600; text-decoration: none;
+transition: all 0.2s;
+}
+.contact-link.phone { background: var(--sky-pale); color: var(--sky); }
+.contact-link.phone:hover { background: var(--sky); color: white; }
+.contact-link.email { background: var(--sky-pale); color: var(--sky); }
+.contact-link.email:hover { background: var(--sky); color: white; }
+.contact-link.wa { background: #E6F9EE; color: #168C4F; }
+.contact-link.wa:hover { background: #25D366; color: white; }
+
+/* ── FOOTER ── */
+footer {
+background: var(--black); color: rgba(255,255,255,0.55);
+padding: 2rem 5%; text-align: center;
+font-size: 0.78rem; line-height: 1.8;
+}
+footer strong { color: var(--sky-lt); }
+footer em { color: rgba(255,255,255,0.35); font-style: italic; }
+
+/* ── WHATSAPP FLOAT ── */
+.wa-float {
+position: fixed; bottom: 2rem; right: 2rem; z-index: 200;
+background: #25D366; color: white;
+width: 58px; height: 58px; border-radius: 50%;
+display: flex; align-items: center; justify-content: center;
+font-size: 1.6rem; text-decoration: none;
+box-shadow: 0 6px 24px rgba(37,211,102,0.45);
+transition: transform 0.2s, box-shadow 0.2s;
+animation: pulse 2.5s infinite;
+}
+.wa-float:hover { transform: scale(1.1); box-shadow: 0 10px 32px rgba(37,211,102,0.5); }
+
+/* ── NOTIFICATION ── */
+.notif {
+position: fixed; bottom: 5.5rem; right: 2rem; z-index: 201;
+background: white; color: var(--black);
+padding: 0.8rem 1.2rem; border-radius: 14px;
+font-size: 0.82rem; font-weight: 500;
+box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+border-left: 4px solid #25D366;
+transform: translateX(120%); transition: transform 0.4s;
+max-width: 240px;
+backdrop-filter: blur(10px);
+background: rgba(255,255,255,0.95);
+}
+.notif.show { transform: translateX(0); }
+
+/* ── MODAL ── */
+.modal-overlay {
+position: fixed; inset: 0; z-index: 500;
+background: rgba(13,27,38,0.7); backdrop-filter: blur(4px);
+display: none; align-items: center; justify-content: center; padding: 1rem;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+background: white; border-radius: 24px; max-width: 520px; width: 100%;
+padding: 2rem; position: relative; max-height: 90vh; overflow-y: auto;
+animation: scaleIn 0.3s ease;
+}
+.modal-close {
+position: absolute; top: 1rem; right: 1rem;
+background: var(--sky-ultra); border: none; border-radius: 50%;
+width: 34px; height: 34px; cursor: pointer; font-size: 1rem;
+display: flex; align-items: center; justify-content: center;
+color: var(--gray); transition: background 0.2s;
+}
+.modal-close:hover { background: var(--sky-pale); color: var(--sky); }
+.modal-img {
+width: 100%; aspect-ratio: 16/9; border-radius: 16px; margin-bottom: 1.2rem;
+background: linear-gradient(135deg, var(--sky) 0%, var(--sky-lt) 100%);
+display: flex; align-items: center; justify-content: center;
+overflow: hidden;
+position: relative;
+}
+.modal-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.modal h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; margin-bottom: 0.4rem; }
+.modal-location { font-size: 0.82rem; color: var(--gray); margin-bottom: 1rem; }
+.modal-features { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+.modal-feature { display: flex; align-items: center; gap: 0.3rem; font-size: 0.82rem; color: var(--gray); }
+.modal-feature svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--sky);
+  stroke-width: 2;
+  fill: none;
+}
+.modal-desc { font-size: 0.88rem; color: var(--gray); line-height: 1.7; margin-bottom: 1.5rem; }
+.modal-pricing {
+display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.5rem;
+}
+.modal-price-card {
+background: var(--sky-ultra); border-radius: 12px; padding: 0.9rem;
+text-align: center; border: 1px solid rgba(135,196,234,0.3);
+}
+.modal-price-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray); }
+.modal-price-val { font-size: 1.2rem; font-weight: 700; color: var(--sky); margin-top: 0.2rem; }
+.modal-price-unit { font-size: 0.7rem; color: var(--gray); }
+.modal-actions { display: flex; gap: 0.8rem; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(28px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeLeft {
+from { opacity: 0; transform: translateX(40px); }
+to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes scaleIn {
+from { opacity: 0; transform: scale(0.92); }
+to   { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse {
+0%, 100% { box-shadow: 0 6px 24px rgba(37,211,102,0.45); }
+50%       { box-shadow: 0 6px 32px rgba(37,211,102,0.7); }
+}
+
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.65s, transform 0.65s; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+.hero { grid-template-columns: 1fr; gap: 2rem; padding-top: 90px; }
+.hero-visual { display: none; }
+.form-row { grid-template-columns: 1fr; }
+.galerie-grid { grid-template-columns: repeat(2,1fr); grid-template-rows: auto; }
+.gal-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+.nav-links { display: none; }
+.contact-strip { flex-direction: column; }
+.hero-stats { gap: 1.5rem; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader-overlay" id="loader">
+  <div class="loader-logo">THEWOLF</div>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- NAV -->
+
+<nav id="navbar">
+  <div class="nav-logo">
+    <span>THEWOLF</span>
+    <span>SERVICE</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#residences">Résidences</a></li>
+    <li><a href="#galerie">Galerie</a></li>
+    <li><a href="#avantages">Avantages</a></li>
+    <li><a href="#reservation" class="nav-cta">Réserver</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Résidences Meublées — Abidjan</div>
+    <h1>Le confort,<br><em>en toute liberté</em></h1>
+    <p class="hero-tagline">Des résidences meublées premium à Abidjan. Cocody, Plateau, Yopougon et plus — votre chez-vous dès le premier jour.</p>
+    <div class="hero-actions">
+      <a href="#residences" class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.3rem;">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        Voir les résidences
+      </a>
+      <a href="https://wa.me/2250712809641?text=Bonjour%20THEWOLF%20SERVICE%2C%20je%20souhaite%20avoir%20des%20informations%20sur%20vos%20r%C3%A9sidences." class="btn-wa" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 0.3rem;">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.13 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </svg>
+        WhatsApp
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">10+</span>
+        <span class="stat-label">Résidences</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">4</span>
+        <span class="stat-label">Zones</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">24h</span>
+        <span class="stat-label">Disponible</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card-main">
+      <div class="hero-card-img-bg"></div>
+      <div class="hero-card-price">À partir de 15 000 FCFA/j</div>
+      <div class="hero-card-info">
+        <h3>Résidence Premium Cocody</h3>
+        <p>Cocody Riviera — Disponible</p>
+      </div>
+    </div>
+    <div class="hero-cards-row">
+      <div class="hero-card-sm">
+        <div class="glass-icon glass-icon-sm">
+          <svg viewBox="0 0 24 24">
+            <path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"></path>
+            <path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0Z"></path>
+            <path d="M12 12v.01"></path>
+          </svg>
+        </div>
+        <strong>Entièrement meublé</strong>
+        <span>Prêt à vivre dès l'arrivée</span>
+      </div>
+      <div class="hero-card-sm">
+        <div class="glass-icon glass-icon-sm">
+          <svg viewBox="0 0 24 24">
+            <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+            <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+            <line x1="12" y1="20" x2="12.01" y2="20"></line>
+          </svg>
+        </div>
+        <strong>WiFi inclus</strong>
+        <span>Connexion haut débit</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RÉSIDENCES -->
+
+<section id="residences">
+  <div class="section-header reveal">
+    <span class="section-label">Nos Résidences</span>
+    <h2>Trouvez votre <em>résidence idéale</em></h2>
+    <p>Studios, appartements F2, F3 et villas meublées disponibles dans les meilleurs quartiers d'Abidjan.</p>
+  </div>
+
+  <div class="filter-bar reveal">
+    <button class="filter-btn active" data-filter="all">Tous</button>
+    <button class="filter-btn" data-filter="cocody">Cocody</button>
+    <button class="filter-btn" data-filter="plateau">Plateau</button>
+    <button class="filter-btn" data-filter="yopougon">Yopougon</button>
+    <button class="filter-btn" data-filter="autre">Autres zones</button>
+  </div>
+
+  <div class="residences-grid" id="residencesGrid"></div>
+</section>
+
+<!-- GALERIE -->
+
+<section id="galerie">
+  <div class="section-header reveal">
+    <span class="section-label">Galerie</span>
+    <h2>Un cadre <em>soigné</em> pour votre séjour</h2>
+    <p>Chaque résidence est aménagée avec soin pour vous offrir confort et élégance.</p>
+  </div>
+  <div class="galerie-grid reveal">
+    <div class="gal-item">
+      <img src="/assets/images/gallery/salon.jpg" alt="Salon moderne" loading="lazy">
+      <div class="gal-overlay">
+        <div class="glass-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="gal-item">
+      <img src="/assets/images/gallery/chambre.jpg" alt="Chambre" loading="lazy">
+      <div class="gal-overlay">
+        <div class="glass-icon glass-icon-sm">
+          <svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="gal-item">
+      <img src="/assets/images/gallery/cuisine.jpg" alt="Cuisine équipée" loading="lazy">
+      <div class="gal-overlay">
+        <div class="glass-icon glass-icon-sm">
+          <svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="gal-item">
+      <img src="/assets/images/gallery/sdb.jpg" alt="Salle de bain" loading="lazy">
+      <div class="gal-overlay">
+        <div class="glass-icon glass-icon-sm">
+          <svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="gal-item">
+      <img src="/assets/images/gallery/jardin.jpg" alt="Jardin" loading="lazy">
+      <div class="gal-overlay">
+        <div class="glass-icon glass-icon-sm">
+          <svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center;margin-top:1.5rem;font-size:0.82rem;color:var(--gray)">
+    Remplacez ces images par vos vraies photos dans le dossier /assets/images/gallery/
+  </p>
+</section>
+
+<!-- AVANTAGES -->
+
+<section id="avantages">
+  <div class="section-header reveal">
+    <span class="section-label">Pourquoi THEWOLF</span>
+    <h2>Tout ce qu'il vous faut,<br><em>dès le premier jour</em></h2>
+  </div>
+  <div class="avantages-grid reveal">
+    <div class="av-card">
+      <div class="glass-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"></path>
+          <path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0Z"></path>
+        </svg>
+      </div>
+      <h3>Entièrement meublé</h3>
+      <p>Literie, cuisine équipée, salon aménagé — rien à apporter.</p>
+    </div>
+    <div class="av-card">
+      <div class="glass-icon">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      </div>
+      <h3>Disponible 24h/24</h3>
+      <p>Check-in flexible. Nous nous adaptons à votre emploi du temps.</p>
+    </div>
+    <div class="av-card">
+      <div class="glass-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+          <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+          <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+          <line x1="12" y1="20" x2="12.01" y2="20"></line>
+        </svg>
+      </div>
+      <h3>WiFi haut débit</h3>
+      <p>Connexion incluse dans toutes nos résidences.</p>
+    </div>
+    <div class="av-card">
+      <div class="glass-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 6h18"></path>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          <path d="M10 11v6"></path>
+          <path d="M14 11v6"></path>
+        </svg>
+      </div>
+      <h3>Ménage inclus</h3>
+      <p>Service de nettoyage régulier pour maintenir votre confort.</p>
+    </div>
+    <div class="av-card">
+      <div class="glass-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+      </div>
+      <h3>Emplacements premium</h3>
+      <p>Cocody, Plateau, Yopougon — proches de tout.</p>
+    </div>
+    <div class="av-card">
+      <div class="glass-icon">
+        <svg viewBox="0 0 24 24">
+          <line x1="12" y1="1" x2="12" y2="23"></line>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
+      </div>
+      <h3>Tarifs flexibles</h3>
+      <p>Prix journalier, hebdomadaire ou mensuel selon vos besoins.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RÉSERVATION -->
+
+<section id="reservation">
+  <div class="section-header reveal">
+    <span class="section-label">Réservation</span>
+    <h2>Réservez votre <em>séjour</em></h2>
+    <p>Remplissez le formulaire et nous vous recontactons sous 2h.</p>
+  </div>
+  <div class="form-container reveal">
+    <form id="reservationForm" onsubmit="submitForm(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nom & Prénoms *</label>
+          <input type="text" placeholder="Votre nom complet" required>
+        </div>
+        <div class="form-group">
+          <label>Téléphone *</label>
+          <input type="tel" placeholder="07 XX XX XX XX" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date d'arrivée *</label>
+          <input type="date" required>
+        </div>
+        <div class="form-group">
+          <label>Date de départ *</label>
+          <input type="date" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Type de résidence souhaité</label>
+        <select>
+          <option value="">-- Choisir --</option>
+          <option>Studio (1 pièce)</option>
+          <option>F2 (2 pièces)</option>
+          <option>F3 (3 pièces)</option>
+          <option>Villa</option>
+          <option>Peu importe</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Zone préférée</label>
+        <select>
+          <option value="">-- Choisir --</option>
+          <option>Cocody / Riviera</option>
+          <option>Plateau / Centre</option>
+          <option>Yopougon / Koumassi</option>
+          <option>Peu importe</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message (optionnel)</label>
+        <textarea placeholder="Précisez vos besoins, budget, etc."></textarea>
+      </div>
+      <button type="submit" class="form-submit">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+        Envoyer ma demande
+      </button>
+    </form>
+    <div class="form-wa-alt">
+      Ou réservez directement sur
+      <a href="https://wa.me/2250712809641?text=Bonjour%20THEWOLF%20SERVICE%2C%20je%20souhaite%20r%C3%A9server%20une%20r%C3%A9sidence." target="_blank">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.13 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </svg>
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT STRIP -->
+
+<div class="contact-strip">
+  <div class="contact-strip-info">
+    <h3>THEWOLF SERVICE</h3>
+    <p>Abidjan, Côte d'Ivoire — Location de résidences meublées premium</p>
+  </div>
+  <div class="contact-strip-links">
+    <a href="tel:+2250712809641" class="contact-link phone">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+      </svg>
+      07 12 80 96 41
+    </a>
+    <a href="tel:+2250555458000" class="contact-link phone">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+      </svg>
+      05 55 45 80 00
+    </a>
+    <a href="mailto:abdoulballou7@gmail.com" class="contact-link email">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+        <polyline points="22,6 12,13 2,6"></polyline>
+      </svg>
+      Email
+    </a>
+    <a href="https://wa.me/2250712809641" target="_blank" class="contact-link wa">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.13 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+      </svg>
+      WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+
+<footer>
+  <strong>THEWOLF SERVICE</strong> — Location de Résidences Meublées<br>
+  <em>"Le confort en toute liberté"</em><br>
+  Abidjan, Côte d'Ivoire &nbsp;|&nbsp; abdoulballou7@gmail.com &nbsp;|&nbsp; +225 07 12 80 96 41
+</footer>
+
+<!-- WhatsApp flottant -->
+
+<a href="https://wa.me/2250712809641?text=Bonjour%20THEWOLF%20SERVICE%20!" target="_blank" class="wa-float" title="Réserver sur WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.    </svg>
+  </a>
+</div>
+
+<!-- Notification -->
+
+<div class="notif" id="notif">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2" style="margin-right: 0.5rem;">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+  </svg>
+  Formulaire envoyé ! Nous vous recontactons sous 2h.
+</div>
+
+<!-- MODAL -->
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModalBtn()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <div class="modal-img" id="modalImg">
+      <img src="/assets/images/placeholder.jpg" alt="Résidence" id="modalImgSrc">
+    </div>
+    <h2 id="modalTitle">-</h2>
+    <p class="modal-location" id="modalLocation">-</p>
+    <div class="modal-features" id="modalFeatures"></div>
+    <p class="modal-desc" id="modalDesc">-</p>
+    <div class="modal-pricing">
+      <div class="modal-price-card">
+        <div class="modal-price-label">Prix journalier</div>
+        <div class="modal-price-val" id="modalPj">-</div>
+        <div class="modal-price-unit">FCFA / jour</div>
+      </div>
+      <div class="modal-price-card">
+        <div class="modal-price-label">Prix mensuel</div>
+        <div class="modal-price-val" id="modalPm">-</div>
+        <div class="modal-price-unit">FCFA / mois</div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-details" style="flex:1" onclick="closeModalBtn()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.3rem;">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+        Fermer
+      </button>
+      <a id="modalWa" href="#" target="_blank" class="btn-reserver" style="flex:2;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 0.3rem;">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.13 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </svg>
+        Réserver sur WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── LOADER ────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+  }, 1500);
+});
+
+// ── DONNÉES RÉSIDENCES ────────────────────────────────────────
+const residences = [
+  {
+    id: 1, zone: 'cocody', image: '/assets/images/residences/studio-riviera.jpg',
+    titre: 'Studio Riviera Palmeraie',
+    lieu: 'Cocody Riviera Palmeraie',
+    type: 'Studio', pieces: 1, superficie: '35m²',
+    features: [
+      { icon: 'sofa', label: 'Meublé' },
+      { icon: 'wifi', label: 'WiFi' },
+      { icon: 'wind', label: 'Climatisé' },
+      { icon: 'car', label: 'Parking' }
+    ],
+    desc: 'Studio moderne entièrement meublé au cœur de la Riviera Palmeraie. Idéal pour professionnel ou couple. Cuisine équipée, salle de bain privée, climatisation.',
+    pj: '15 000', pm: '350 000', dispo: true,
+  },
+  {
+    id: 2, zone: 'cocody', image: '/assets/images/residences/f2-cocody.jpg',
+    titre: 'Appartement F2 Cocody II',
+    lieu: 'Cocody II Plateaux',
+    type: 'F2', pieces: 2, superficie: '65m²',
+    features: [
+      { icon: 'sofa', label: 'Meublé' },
+      { icon: 'wifi', label: 'WiFi' },
+      { icon: 'wind', label: 'Climatisé' },
+      { icon: 'sparkles', label: 'Ménage' }
+    ],
+    desc: 'Grand appartement F2 dans une résidence sécurisée. Séjour lumineux, chambre avec placard, cuisine américaine. Quartier calme et résidentiel.',
+    pj: '22 000', pm: '500 000', dispo: true,
+  },
+  {
+    id: 3, zone: 'plateau', image: '/assets/images/residences/studio-plateau.jpg',
+    titre: 'Studio Plateau Centre',
+    lieu: 'Plateau — Centre des Affaires',
+    type: 'Studio', pieces: 1, superficie: '30m²',
+    features: [
+      { icon: 'sofa', label: 'Meublé' },
+      { icon: 'wifi', label: 'WiFi' },
+      { icon: 'wind', label: 'Climatisé' },
+      { icon: 'building', label: 'Vue ville' }
+    ],
+    desc: 'Studio idéalement situé au Plateau, à deux pas des grandes entreprises et administrations. Parfait pour les déplacements professionnels courts.',
+    pj: '18 000', pm: '400 000', dispo: true,
+  },
+  {
+    id: 4, zone: 'plateau', image: '/assets/images/residences/f3-marcory.jpg',
+    titre: 'Appartement F3 Marcory',
+    lieu: 'Marcory / Plateau Zone 4',
+    type: 'F3', pieces: 3, superficie: '90m²',
+    features: [
+      { icon: 'sofa', label: 'Meublé' },
+      { icon: 'wifi', label: 'WiFi' },
+      { icon: 'wind', label: 'Climatisé' },
+      { icon: 'utensils', label: 'Cuisine équipée' }
+    ],
+    desc: 'Spacieux appartement F3 idéal pour famille ou groupe. Deux chambres, grand séjour, cuisine entièrement équipée. Résidence gardée 24h/24.',
+    pj: '30 000', pm: '680 000', dispo: false,
+  },
+  {
+    id: 5, zone: 'yopougon', image: '/assets/images/residences/studio-yopougon.jpg',
+    titre: 'Studio Yopougon Selmer',
+    lieu: 'Yopougon Selmer',
+    type: 'Studio', pieces: 1, superficie: '28m²',
+    features: [
+      { icon: 'sofa', label: 'Meublé' },
+      { icon: 'wifi', label: 'WiFi' },
+      { icon: 'wind', label: 'Climatisé' }
+    ],
+    desc: 'Studio confortable et abordable à Yopougon Selmer. Tout équipé, accès facile aux transports, quartier animé.',
+    pj: '10 000', pm: '220 000', dispo: true,
+  },
+  {
+    id: 6, zone: 'autre', image: '/assets/images/residences/villa-bingerville.jpg',
+    titre: 'Villa Meublée Bingerville',
+    lieu: 'Bingerville',
+    type: 'Villa', pieces: 4, superficie: '180m²',
+    features: [
+      { icon: 'sofa', label: 'Meublé' },
+      { icon: 'wifi', label: 'WiFi' },
+      { icon: 'tree', label: 'Jardin' },
+      { icon: 'car', label: 'Grand parking' }
+    ],
+    desc: 'Villa spacieuse avec jardin privé à Bingerville. Idéale pour séjours familiaux ou longs séjours. 3 chambres, grand séjour, cuisine complète.',
+    pj: '50 000', pm: '1 100 000', dispo: true,
+  },
+];
+
+// ── ICONS SVG ───────────────────────────────────────────────────
+const icons = {
+  sofa: '<path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"></path><path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0Z"></path>',
+  wifi: '<path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line>',
+  wind: '<path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path>',
+  car: '<path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1l-.8 1.63A6 6 0 0 0 2 12.42V16h2"></path><circle cx="6.5" cy="16.5" r="2.5"></circle><circle cx="16.5" cy="16.5" r="2.5"></circle>',
+  sparkles: '<path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path>',
+  building: '<rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><path d="M9 22v-4h6v4"></path><path d="M8 6h.01"></path><path d="M16 6h.01"></path><path d="M8 10h.01"></path><path d="M16 10h.01"></path><path d="M8 14h.01"></path><path d="M16 14h.01"></path>',
+  utensils: '<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path>',
+  tree: '<path d="M10 10v.2A3 3 0 0 1 8.9 16v0H5v0h0a3 3 0 0 1-1-5.8V10a3 3 0 0 1 6 0Z"></path><path d="M12 2v4"></path><path d="M12 22v-5"></path><path d="M12 12v.2A3 3 0 0 1 10.9 18v0H17v0a3 3 0 0 1-1-5.8V10a3 3 0 0 1 6 0Z"></path>',
+  mapPin: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle>'
+};
+
+function getIcon(name) {
+  return icons[name] || icons.sofa;
+}
+
+// ── RENDU CARTES ──────────────────────────────────────────────
+function renderCards(filter = 'all') {
+  const grid = document.getElementById('residencesGrid');
+  const filtered = filter === 'all' ? residences : residences.filter(r => r.zone === filter);
+  
+  grid.innerHTML = filtered.map(r => `
+    <div class="res-card" data-id="${r.id}">
+      <div class="res-card-img">
+        <img src="${r.image}" alt="${r.titre}" loading="lazy" onerror="this.src='/assets/images/placeholder.jpg'">
+        <span class="res-badge ${r.dispo ? 'dispo' : 'occupe'}">
+          ${r.dispo ? 'Disponible' : 'Occupée'}
+        </span>
+      </div>
+      <div class="res-card-body">
+        <div class="res-card-top">
+          <div class="res-card-title">${r.titre}</div>
+        </div>
+        <div class="res-location">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0;">
+            ${getIcon('mapPin')}
+          </svg>
+          ${r.lieu} · ${r.type} · ${r.superficie}
+        </div>
+        <div class="res-features">
+          ${r.features.slice(0,3).map(f => `
+            <span class="res-feature">
+              <svg viewBox="0 0 24 24">${getIcon(f.icon)}</svg>
+              ${f.label}
+            </span>
+          `).join('')}
+        </div>
+        <div class="res-pricing">
+          <div class="price-item">
+            <span class="price-label">/ Jour</span>
+            <span class="price-val">${r.pj}</span>
+          </div>
+          <div class="price-divider"></div>
+          <div class="price-item">
+            <span class="price-label">/ Mois</span>
+            <span class="price-val">${r.pm}</span>
+          </div>
+        </div>
+        <div class="res-card-actions">
+          <button class="btn-details" onclick="openModal(${r.id})">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.3rem;">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            Détails
+          </button>
+          <button class="btn-reserver" onclick="waReserver('${r.titre}')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 0.3rem;">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.13 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            Réserver
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── FILTRES ───────────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCards(btn.dataset.filter);
+  });
+});
+
+// ── MODAL ─────────────────────────────────────────────────────
+function openModal(id) {
+  const r = residences.find(x => x.id === id);
+  if (!r) return;
+  
+  document.getElementById('modalImgSrc').src = r.image;
+  document.getElementById('modalImgSrc').alt = r.titre;
+  document.getElementById('modalTitle').textContent = r.titre;
+  document.getElementById('modalLocation').innerHTML = `
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 0.3rem;">
+      ${getIcon('mapPin')}
+    </svg>
+    ${r.lieu} — ${r.type} · ${r.superficie}
+  `;
+  
+  document.getElementById('modalFeatures').innerHTML = r.features.map(f => `
+    <span class="modal-feature">
+      <svg viewBox="0 0 24 24">${getIcon(f.icon)}</svg>
+      ${f.label}
+    </span>
+  `).join('');
+  
+  document.getElementById('modalDesc').textContent = r.desc;
+  document.getElementById('modalPj').textContent = r.pj;
+  document.getElementById('modalPm').textContent = r.pm;
+  
+  const msg = encodeURIComponent(`Bonjour THEWOLF SERVICE, je suis intéressé(e) par : ${r.titre}. Merci de me donner plus d'informations.`);
+  document.getElementById('modalWa').href = `https://wa.me/2250712809641?text=${msg}`;
+  
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalBtn();
+}
+
+function closeModalBtn() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── WHATSAPP RÉSERVER ─────────────────────────────────────────
+function waReserver(titre) {
+  const msg = encodeURIComponent(`Bonjour THEWOLF SERVICE, je souhaite réserver : ${titre}. Quelles sont les disponibilités ?`);
+  window.open(`https://wa.me/2250712809641?text=${msg}`, '_blank');
+}
+
+// ── FORMULAIRE ────────────────────────────────────────────────
+function submitForm(e) {
+  e.preventDefault();
+  const notif = document.getElementById('notif');
+  notif.classList.add('show');
+  setTimeout(() => notif.classList.remove('show'), 4000);
+  e.target.reset();
+}
+
+// ── SCROLL NAV ────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ── REVEAL ────────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── INIT ──────────────────────────────────────────────────────
+renderCards();
+</script>
+
+</body>
+</html>
